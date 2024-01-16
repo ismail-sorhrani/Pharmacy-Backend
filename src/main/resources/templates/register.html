@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #3498db, #ffffff);
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #007bff;
+            font-weight: bold;
+            order: 1;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 8px;
+            order: 2;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff; /* Couleur bleue */
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; /* Couleur bleue plus foncée au survol */
+        }
+
+        .success-message {
+            background-color: #c299d0;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        span {
+            display: block;
+            color: #007bff;
+            margin-top: 10px;
+        }
+
+        a {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <img class="logo" src="https://github.com/ayouboifikEnsaj/im/blob/main/f53ec783-ab18-466b-97e6-9af3bbc2fb00.png?raw=true" alt="Logo">
+
+    <div th:if="${param.success}">
+        <div class="success-message">
+            <p>Registration Successful!</p>
+        </div>
+    </div>
+
+    <h2>Registration</h2>
+    <form
+            method="post"
+            role="form"
+            th:action="@{/register}"
+            th:object="${user}"
+    >
+
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input th:field="*{username}" type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input th:field="*{email}" type="email" id="email" name="email" placeholder="Enter your email" required>
+            <span th:if="${userexist}" style="color: red;">Username is Taken</span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input th:field="*{password}" type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <span> Already Registered <a th:href="@{/login}">Login</a></span>
+</div>
+
+</body>
+</html>

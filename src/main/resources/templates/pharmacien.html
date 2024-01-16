@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+    <style>
+        .card-APPROVEE {
+            border-radius: 10px;
+            background-color: green;
+            border-color: green; /* Changer la couleur de la bordure si nécessaire */
+            color: white; /* Changer la couleur du texte si nécessaire */
+        }
+
+        .card-REFUSEE {
+            border-radius: 10px;
+            background-color: red;
+            border-color: red; /* Changer la couleur de la bordure si nécessaire */
+            color: white; /* Changer la couleur du texte si nécessaire */
+        }
+
+        .card-ENATTEND {
+            border-radius: 10px;
+            background-color: yellow;
+            border-color: yellow; /* Changer la couleur de la bordure si nécessaire */
+            /* Vous pouvez ajuster la couleur en fonction de vos préférences */
+        }
+
+        .status-APPROVEE {
+            background-color: green;
+            color: white; /* Changer la couleur du texte si nécessaire */
+        }
+
+        .status-REFUSEE {
+            background-color: red;
+            color: white; /* Changer la couleur du texte si nécessaire */
+        }
+
+        .status-ENATTEND {
+            background-color: yellow;
+            /* Vous pouvez ajuster la couleur en fonction de vos préférences */
+        }
+
+        body {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            /* Vos styles pour le sidebar */
+        }
+
+        .content {
+            /* Vos styles pour le contenu principal */
+            padding: 20px; /* Ajoutez un espacement pour le contenu principal */
+            background: linear-gradient(to bottom, #3498db, #ffffff);
+        }
+        /*body {*/
+        /*    background-color: #f8f9fa;*/
+        /*    font-family: 'Arial', sans-serif;*/
+        /*    padding: 20px;*/
+        /*}*/
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .btn-success {
+            background-color: gray;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: #4a0466;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div class="sidebar h-full p-3 space-y-2 w-60 dark:bg-gray-900  text-white bg-gradient-to-r from-blue-500 to-blue-700" style="padding-top: 30px; padding-left: 30px;">
+    <div class="flex items-center mb-4">
+        <img th:src="@{/images/ll.png}" alt="Votre Image">
+    </div>
+    <div class="flex items-center p-2 space-x-4">
+        <div class="flex items-center">
+            <!-- Utilisez une classe pour définir la taille et l'apparence de l'icône d'administrateur -->
+            <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mr-2">
+                <!-- Icône d'administrateur provenant de Bootstrap Icons -->
+                <i class="bi bi-person-circle text-white"></i>
+            </div>
+            <div>
+                <div class="admin-name text-black text-lg" th:text="'Bonjour ' + ${userdetail.username}"></div>
+                <!--                <span class="flex items-center space-x-1">-->
+                <!--                <a rel="noopener noreferrer" th:href="@{/admin/pharmacie}" class="text-xs hover:underline dark:text-gray-400">View profile</a>-->
+                <!--            </span>-->
+            </div>
+        </div>
+    </div>
+    <div class="divide-y dark:divide-gray-700">
+        <ul class="pt-2 pb-4 space-y-1 text-sm">
+            <li class="dark:bg-gray-800 dark:text-gray-50">
+                <a rel="noopener noreferrer" th:href="@{/pharmacien/show}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 fill-current dark:text-gray-400">
+                        <path d="M68.983,382.642l171.35,98.928a32.082,32.082,0,0,0,32,0l171.352-98.929a32.093,32.093,0,0,0,16-27.713V157.071a32.092,32.092,0,0,0-16-27.713L272.334,30.429a32.086,32.086,0,0,0-32,0L68.983,129.358a32.09,32.09,0,0,0-16,27.713V354.929A32.09,32.09,0,0,0,68.983,382.642ZM272.333,67.38l155.351,89.691V334.449L272.333,246.642ZM256.282,274.327l157.155,88.828-157.1,90.7L99.179,363.125ZM84.983,157.071,240.333,67.38v179.2L84.983,334.39Z"></path>
+                    </svg>
+                    <span>Ma Pharmacie</span>
+                </a>
+            </li>
+            <li class="dark:bg-gray-800 dark:text-gray-50">
+                <a rel="noopener noreferrer" th:href="@{/pharmacien/garde}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 fill-current dark:text-gray-400">
+                        <path d="M68.983,382.642l171.35,98.928a32.082,32.082,0,0,0,32,0l171.352-98.929a32.093,32.093,0,0,0,16-27.713V157.071a32.092,32.092,0,0,0-16-27.713L272.334,30.429a32.086,32.086,0,0,0-32,0L68.983,129.358a32.09,32.09,0,0,0-16,27.713V354.929A32.09,32.09,0,0,0,68.983,382.642ZM272.333,67.38l155.351,89.691V334.449L272.333,246.642ZM256.282,274.327l157.155,88.828-157.1,90.7L99.179,363.125ZM84.983,157.071,240.333,67.38v179.2L84.983,334.39Z"></path>
+                    </svg>
+                    <span>Gestion Garde</span>
+                </a>
+            </li>
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/pharmacien/historique}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 fill-current dark:text-gray-400">
+                        <path d="M479.6,399.716l-81.084-81.084-62.368-25.767A175.014,175.014,0,0,0,368,192c0-97.047-78.953-176-176-176S16,94.953,16,192,94.953,368,192,368a175.034,175.034,0,0,0,101.619-32.377l25.7,62.2L400.4,478.911a56,56,0,1,0,79.2-79.195ZM48,192c0-79.4,64.6-144,144-144s144,64.6,144,144S271.4,336,192,336,48,271.4,48,192ZM456.971,456.284a24.028,24.028,0,0,1-33.942,0l-76.572-76.572-23.894-57.835L380.4,345.771l76.573,76.572A24.028,24.028,0,0,1,456.971,456.284Z"></path>
+                    </svg>
+                    <span>Historique Garde</span>
+                </a>
+            </li>
+
+        </ul>
+        <ul class="pt-4 pb-2 space-y-1 text-sm">
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/logout}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 fill-current dark:text-gray-400">
+                        <path d="M440,424V88H352V13.005L88,58.522V424H16v32h86.9L352,490.358V120h56V456h88V424ZM320,453.642,120,426.056V85.478L320,51Z"></path>
+                        <rect width="32" height="64" x="256" y="232"></rect>
+                    </svg>
+                    <span >Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="content">
+    <div class="container mt-3 mb-3">
+        <form action="#" method="post" th:action="@{'/pharmacien/update/' + ${pharmacie.id}}" th:object="${pharmacie}"   enctype="multipart/form-data" onsubmit="return validateForm()">
+
+
+            <div class="mb-3">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <div class="card" th:class="${'status-card card-' + pharmacie.status}">
+                            <div class="card-body">
+                                <h5 class="card-title">Statut</h5>
+                                <label th:text="${pharmacie.status}"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Votre Garde Sera Terminer D'apres</h5>
+                                    <p id="countdown"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script th:inline="javascript">
+
+                        var dateDebutString = /*[[${dateFin}]]*/ '';
+                        //var dateDebut = new Date(dateDebutString);
+                        //var dateDebut = new Date('2024-01-31');
+                        var dateDebut = new Date(dateDebutString);
+                        // Mettre à jour le compte à rebours toutes les secondes
+                        var countdownInterval = setInterval(function() {
+                            // Récupérer la date actuelle du système
+                            var dateDuSysteme = new Date();
+
+                            // Calculer la différence en secondes entre les deux dates
+                            var differenceEnSecondes = Math.floor((dateDebut - dateDuSysteme) / 1000);
+
+                            // Calculer les jours, heures, minutes et secondes
+                            var jours = Math.floor(differenceEnSecondes / (3600 * 24));
+                            var heures = Math.floor((differenceEnSecondes % (3600 * 24)) / 3600);
+                            var minutes = Math.floor((differenceEnSecondes % 3600) / 60);
+                            var secondes = differenceEnSecondes % 60;
+
+                            // Afficher le résultat dans l'élément avec l'ID 'countdown'
+                            document.getElementById('countdown').innerText = jours + ' jours, ' + heures + ' heures, ' + minutes + ' minutes, ' + secondes + ' secondes';
+
+                            // Vérifier si le compte à rebours est terminé
+                            if (differenceEnSecondes <= 0) {
+                                clearInterval(countdownInterval); // Arrêter le compte à rebours
+                                document.getElementById('countdown').innerText = 'vous etes pas en garde actuellement';
+                            }
+                        }, 1000); // Mettre à jour toutes les secondes
+                        /]]>/
+                    </script>
+
+
+                    <div class="col-md-6">
+                        <img th:if="${photo != null}" th:src="'data:image/jpeg;base64,' + ${photo}" class="img-fluid" alt="Pharmacy Photo" style="width: 100%; max-height: 200px;"/>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Nom" th:value="${pharmacie.nom}" th:field="*{nom}" />
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" placeholder="Adresse" th:value="${pharmacie.adresse}" th:field="*{adresse}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col">
+                        <input type="text" id="lon" class="form-control" placeholder="Longitude" th:value="${pharmacie.log}" th:field="*{log}" />
+                    </div>
+                    <div class="col">
+                        <input type="text" id="lat" class="form-control" placeholder="Latitude" th:value="${pharmacie.lat}" th:field="*{lat}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col">
+                        <select class="form-control" id="citySelect" onchange="fetchZones()">
+                            <option value=""  disabled selected>selectionner une ville</option>
+                            <option th:each="ville : ${villes}" th:value="${ville.id}" th:text="${ville.nom}"></option>
+                        </select>
+                    </div>
+                    <script th:inline="javascript">
+                        function fetchZones() {
+                            var cityId = document.getElementById('citySelect').value;
+                            var zoneSelect = document.getElementById('zoneSelect');
+
+                            // Clear existing options
+                            zoneSelect.innerHTML = '<option value="" disabled selected>Selectionnez une zone</option>';
+
+                            // Fetch zones based on the selected city
+                            if (cityId) {
+                                fetch('/pharmacien/byCity?cityId=' + cityId)
+                                    .then(response => response.json())
+                                    .then(zones => {
+                                        zones.forEach(zone => {
+                                            var option = document.createElement('option');
+                                            option.value = zone.id;
+                                            option.text = zone.nom;
+                                            zoneSelect.add(option);
+                                        });
+                                    })
+                                    .catch(error => console.error('Error fetching zones:', error));
+                            }
+                        }
+                    </script>
+                    <script th:inline="javascript">
+                        function validateForm() {
+                            var nom = document.getElementById('nom').value;
+                            var adresse = document.getElementById('adresse').value;
+                            var log = document.getElementById('lon').value;
+                            var lat = document.getElementById('lat').value;
+                            var citySelect = document.getElementById('citySelect').value;
+                            var zoneSelect = document.getElementById('zoneSelect').value;
+
+                            // Ajoutez d'autres champs si nécessaire
+
+                            if (!nom || !adresse || !log || !lat || !citySelect || !zoneSelect) {
+                                alert("Veuillez Choisir toute les champs ");
+                                return false; // Empêcher la soumission du formulaire
+                            }
+
+                            return true; // Soumettre le formulaire
+                        }
+                    </script>
+
+
+                    <div class="col">
+                        <select class="form-control" id="zoneSelect" name="zone">
+                            <option value=""  disabled selected>Selectionnez une zone</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="file" name="file" class="form-control" accept="image/*"  />
+                    </div>
+                </div>
+            </div>
+            <div id="mapid" style="width: 100%; height: 300px;"></div>
+
+            <script th:inline="javascript">
+                var mymap = L.map('mapid').setView([30.23, -8.63], 6);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(mymap);
+
+                var latInput = document.getElementById('lat');
+                var lonInput = document.getElementById('lon');
+                var marker;
+
+                mymap.on('click', function(e) {
+                    latInput.value = e.latlng.lat.toFixed(6);
+                    lonInput.value = e.latlng.lng.toFixed(6);
+
+                    if (marker) {
+                        mymap.removeLayer(marker);
+                    }
+
+                    marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+                });
+
+                latInput.addEventListener('input', updateMarker);
+                lonInput.addEventListener('input', updateMarker);
+
+                function updateMarker() {
+                    var lat = parseFloat(latInput.value);
+                    var lon = parseFloat(lonInput.value);
+
+                    if (marker) {
+                        mymap.removeLayer(marker);
+                    }
+
+                    marker = L.marker([lat, lon]).addTo(mymap);
+                }
+
+                // Add search control
+                var searchControl = L.Control.geocoder({
+                    defaultMarkGeocode: false
+                }).on('markgeocode', function(e) {
+                    var bbox = e.geocode.bbox;
+
+                    if (bbox) {
+                        mymap.fitBounds(bbox);
+                    } else {
+                        mymap.setView(e.geocode.center, 13);
+                    }
+                }).addTo(mymap);
+            </script>
+
+
+
+
+
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success" th:if="${pharmacie.id ne null}">Modifier</button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+
+</body>
+</html>

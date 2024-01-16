@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <title>Leaflet Map Example</title>
+    <!-- Ajoutez les liens vers les bibliothèques Leaflet CSS et JavaScript -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        /* Style pour la carte */
+        #map {
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Div pour afficher la carte -->
+<div id="map"></div>
+
+<script>
+    // Coordonnées des points (remplacez-les par vos propres coordonnées)
+    var points = [
+        { lat: 51.505, lon: -0.09, title: 'Point 1' },
+        { lat: 51.51, lon: -0.1, title: 'Point 2' },
+        { lat: 51.515, lon: -0.11, title: 'Point 3' }
+    ];
+
+    // Initialisez la carte avec un centre et un zoom initiaux
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    // Ajoutez une couche de tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Ajoutez des marqueurs pour chaque point
+    points.forEach(function(point) {
+        var marker = L.marker([point.lat, point.lon]).addTo(map);
+        marker.bindPopup(point.title); // Ajoutez une info-bulle avec le titre
+    });
+</script>
+
+</body>
+</html>

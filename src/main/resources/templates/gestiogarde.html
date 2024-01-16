@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.90">
+    <title>Title</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            min-height: 100vh;
+            overflow-x: hidden;
+            zoom: 93%;
+
+        }
+
+
+        .sidebar {
+            /* Vos styles pour le sidebar */
+        }
+
+        .content {
+            /* Vos styles pour le contenu principal */
+            padding: 20px; /* Ajoutez un espacement pour le contenu principal */
+            background: linear-gradient(to bottom, #3498db, #ffffff);
+        }
+        .content img {
+            width: 100px; /* Set your desired width */
+            height: 100px; /* Set your desired height */
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar h-full p-3 space-y-2 w-60 dark:bg-gray-900 text-white bg-gradient-to-r from-blue-500 to-blue-700" style="padding-top: 30px; padding-left: 30px;">
+    <div class="flex items-center mb-4">
+        <img th:src="@{/images/ll.png}" alt="Votre Image">
+    </div>
+    <div class="flex items-center p-2 space-x-4">
+        <div class="flex items-center">
+            <!-- Utilisez une classe pour définir la taille et l'apparence de l'icône d'administrateur -->
+            <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mr-2">
+                <!-- Icône d'administrateur provenant de Bootstrap Icons -->
+                <i class="bi bi-person-circle text-white"></i>
+            </div>
+            <div>
+                <div class="admin-name text-black text-lg" th:text="|${admin.username}|"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="divide-y dark:divide-gray-700">
+        <ul class="pt-2 pb-4 space-y-1 text-sm">
+            <li class="dark:bg-gray-800 dark:text-gray-50">
+                <a rel="noopener noreferrer" th:href="@{/admin/ville}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+                    </svg>
+
+                    <span>gestion des villes</span>
+                </a>
+            </li>
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/admin/zone}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+                    </svg>
+
+                    <span> gestion des zones</span>
+                </a>
+            </li>
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/admin/barChart}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+                    </svg>
+
+                    <span>Statistiques</span>
+                </a>
+            </li>
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/admin/pharmacie}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                    </svg>
+
+                    <span>gestion des Pharmacies</span>
+                </a>
+            </li>
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/admin/adming}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 fill-current dark:text-gray-400">
+                        <path d="M453.122,79.012a128,128,0,0,0-181.087.068l-15.511,15.7L241.142,79.114l-.1-.1a128,128,0,0,0-181.02,0l-6.91,6.91a128,128,0,0,0,0,181.019L235.485,449.314l20.595,21.578.491-.492.533.533L276.4,450.574,460.032,266.94a128.147,128.147,0,0,0,0-181.019ZM437.4,244.313,256.571,425.146,75.738,244.313a96,96,0,0,1,0-135.764l6.911-6.91a96,96,0,0,1,135.713-.051l38.093,38.787,38.274-38.736a96,96,0,0,1,135.765,0l6.91,6.909A96.11,96.11,0,0,1,437.4,244.313Z"></path>
+                    </svg>
+                    <span>gestion des gardes</span>
+                </a>-->
+            </li>
+        </ul>
+        <ul class="pt-4 pb-2 space-y-1 text-sm">
+            <li>
+                <a rel="noopener noreferrer" th:href="@{/logout}" class="flex items-center p-2 space-x-3 rounded-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                    </svg>
+
+                    <span >Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="content">
+    <div th:if="${error}" class="error-message bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative mb-4">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${success}" class="error-message bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded relative mb-4">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:switch="${pharmacies}" class="relative flex flex-col w-10/12 p-5 m-10 justify-center items-center">
+        <div class="flex space-x-4 items-center">
+            <div>
+                <form th:action="@{/admin/pharmacieByGardeg}" method="get" id="morm" class="mb-4">
+                    <select th  name="garde" required class="px-3 py-1.5 rounded font-semibold text-gray-800 bg-gradient-to-r from-teal-300 to-blue-300 hover:to-blue-400 hover:from-teal-400 shadow-md" onchange="submitForm1()">
+                        <option value="">Choix du garde</option>
+                        <option th:each="garde : ${gardes}" th:value="${garde.id}" th:text="|${garde.id} ${garde.type}|" ></option>
+                    </select>
+                </form>
+            </div>
+            <div class="border p-4">
+                <form th:action="@{/admin/pharmacieByGardedate}" method="get" id="etatform" class="mb-4">
+                    <label for="startDate">end Date before:</label>
+                    <input type="date" id="startDate" name="startDate" required class="mr-4 px-3 py-1.5 rounded font-semibold text-gray-800 bg-gradient-to-r from-teal-300 to-blue-300 hover:to-blue-400 hover:from-teal-400 shadow-md">
+                    <button type="submit" class="px-3 py-1.5 rounded font-semibold text-white bg-blue-500 hover:bg-blue-600 shadow-md">Submit</button>
+                </form>
+            </div>
+
+            <div class="border p-4">
+                <form th:action="@{/admin/pharmacieByGardedatestart}" method="get" id="etatsform" class="mb-4">
+                    <label for="startDate">start Date after:</label>
+                    <input type="date" id="enddate" name="enddate" required class="mr-4 px-3 py-1.5 rounded font-semibold text-gray-800 bg-gradient-to-r from-teal-300 to-blue-300 hover:to-blue-400 hover:from-teal-400 shadow-md">
+                    <button type="submit" class="px-3 py-1.5 rounded font-semibold text-white bg-blue-500 hover:bg-blue-600 shadow-md">Submit</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <h2 th:case="null" class="text-xl font-semibold my-4">pas des gardes pour le moment</h2>
+        <div th:case="*" class="w-full text-center">
+            <h2 class="text-2xl font-semibold my-8 w-full py-2 bg-gradient-to-r from-blue-500 to-sky-500 rounded-lg text-white shadow-2xl">
+                La liste des Gardes
+            </h2>
+
+
+
+
+            <div class="grid grid-cols-4 gap-10 w-full">
+                <div th:each="pharmacie,stat : ${pharmacies}" class="relative w-full justify-center items-center flex flex-col bg-white border border-blue-500 rounded-lg shadow-md p-3 mb-4">
+
+                    <!-- Vous pouvez définir un dégradé de couleur bleue avec les classes 'bg-gradient-to-br from-blue-300 to-blue-500' -->
+                    <!-- N'oubliez pas d'ajuster les autres classes et styles selon vos besoins -->
+
+                    <span class="text-center mb-3">
+    <p th:text="'Date Debut : ' + ${pharmacie.dateDebut}" class="font-semibold text-lg text-blue-800"></p>
+    <p th:text="'Date Fin : ' + ${pharmacie.dateFin}" class="text-sm text-gray-500"></p>
+    <span class="inline-flex items-center font-semibold text-[.95rem] leading-none text-success bg-success-light rounded-lg p-2">
+        <p th:text="'Pharmacie: ' + ${pharmacie.pharmacie.nom}" class="text-[.95rem] text-success-light"></p>
+    </span>
+</span>
+
+
+                    <a href="#" th:attr="data-partie1=${pharmacie.pharmacie.id}, data-partie2=${pharmacie.garde.id}, data-partie3=${pharmacie.dateDebut}, data-partie4=${pharmacie.dateFin}" onclick="showDeleteConfirmation(this)">
+                        <i class="bi bi-trash-fill absolute bottom-1 right-2 text-lg text-yellow-300 hover:text-yellow-500 hover:scale-125"></i>
+                     </a>
+
+                    <div id="deleteConfirmationPopup" class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 backdrop-blur-sm hidden">
+                        <div class="bg-white p-8 rounded-lg shadow-md">
+                            <p class="text-xl font-semibold mb-4">Êtes-vous sûr(e) de vouloir supprimer cette garde ?</p>
+                            <div class="flex justify-between items-center">
+                                <button id="confirmButton" class="bg-red-500 text-white font-medium px-4 py-1.5 rounded-md mr-4" data-professor-id="" onclick="confirmDelete()">Confirm</button>
+                                <button onclick="cancelDelete()" class="text-gray-500 hover:text-gray-700">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div th:if="${mode eq 'add' or mode eq 'update'}" class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="relative h-3/5 w-2/3 flex flex-col items-center justify-center">
+            <form th:action="${mode eq 'add' ? '/admin/addville' : '/admin/editstatut/' + pharmacie.id}"
+                  th:object="${pharmacie}" method="post"
+                  class="w-full max-w-2xl mx-auto flex flex-col items-center justify-center p-8 bg-gradient-to-r from-blue-200 to-blue-400 rounded-lg shadow-md"
+                  enctype="multipart/form-data">
+
+                <input type="text" hidden="hidden" th:field="*{id}"/>
+
+                <span th:switch="${mode}" class="text-yellow-600">
+                <p th:case="'add'" class="text-xl font-semibold mb-4">Ajouter ville</p>
+                <p th:case="'update'" class="text-xl font-semibold mb-4">Pharmacie information</p>
+            </span>
+                <div class="mb-4 w-full flex flex-row items-center justify-between">
+                    <div class="w-1/2 flex flex-col mr-4">
+                        <label for="name" class="block text-sm font-medium text-gray-500 font-semibold mb-2">Nom pharmacie :</label>
+                        <input id="name" th:field="*{nom}" type="text" placeholder="Entrez le nom du ville "
+                               class="rounded text-sm py-2 px-4 my-2 w-full bg-blue-100 border text-blue-700 border-blue-500 focus:outline-none focus:ring focus:border-blue-700" readonly>
+                    </div>
+                    <div class="w-1/2 flex flex-col mr-4">
+                        <label for="address" class="block text-sm font-medium text-gray-500 font-semibold mb-2">Adresse pharmacie :</label>
+                        <input id="address" th:field="*{adresse}" type="text" placeholder="Entrez l'adresse de la pharmacie "
+                               class="rounded text-sm py-2 px-4 my-2 w-full bg-blue-100 border text-blue-700 border-blue-500 focus:outline-none focus:ring focus:border-blue-700" readonly>
+                    </div>
+                </div>
+                <div class="mb-4 w-full flex flex-row items-center justify-between">
+                    <div class="w-1/2 flex flex-col mr-4">
+                        <label for="name" class="block text-sm font-medium text-gray-500 font-semibold mb-2">Ville :</label>
+                        <input id="ville" th:field="*{zone.ville.nom}" type="text" placeholder="Entrez le nom du ville "
+                               class="rounded text-sm py-2 px-4 my-2 w-full bg-blue-100 border text-blue-700 border-blue-500 focus:outline-none focus:ring focus:border-blue-700" readonly>
+                    </div>
+                    <div class="w-1/2 flex flex-col mr-4">
+                        <label for="address" class="block text-sm font-medium text-gray-500 font-semibold mb-2">Zone :</label>
+                        <input id="zone" th:field="*{zone.nom}" type="text" placeholder="Entrez l'adresse de la pharmacie "
+                               class="rounded text-sm py-2 px-4 my-2 w-full bg-blue-100 border text-blue-700 border-blue-500 focus:outline-none focus:ring focus:border-blue-700" readonly>
+                    </div>
+                </div>
+                <div class="w-4/5 flex flex-col my-4">
+                    <label for="gg" class="block text-sm font-medium text-gray-500 font-semibold mb-2">STATUS:</label>
+                    <select id="selectedString" name="selectedString">
+                        <option th:each="str : ${status}" th:value="${str}" th:text="${str}"></option>
+                    </select>
+                </div>
+
+                <span class="w-full flex justify-between items-center mt-4">
+                <div class="flex justify-center items-center">
+                    <button type="submit" class="bg-yellow-200 text-yellow-700 font-medium px-4 py-1.5 rounded-md hover:bg-yellow-400">Submit</button>
+                </div>
+                <a href="/admin/pharmacie" class="text-yellow-600 ">
+                    <i class="bi bi-x-lg"></i>
+                </a>
+            </span>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+    function submitForm() {
+        document.getElementById('myForm').submit();
+    }
+    function submitForm1() {
+        document.getElementById('morm').submit();
+    }
+    function submitForm2() {
+        document.getElementById('etatform').submit();
+    }
+    function showDeleteConfirmation(element) {
+        const partie1 = element.getAttribute('data-partie1');
+        const partie2 = element.getAttribute('data-partie2');
+        const partie3 = element.getAttribute('data-partie3');
+        const partie4 = element.getAttribute('data-partie4');
+        const confirmationPopup = document.getElementById('deleteConfirmationPopup');
+        confirmationPopup.style.display = 'flex';
+
+        // Set the professorId as a data attribute in the Confirm button
+        //const confirmButton = document.getElementById('confirmButton');
+        //confirmButton.setAttribute('data-professor-id', professorId);
+        const confirmButton = document.getElementById('confirmButton');
+        confirmButton.setAttribute('data-partie1', partie1);
+        confirmButton.setAttribute('data-partie2', partie2);
+        confirmButton.setAttribute('data-partie3', partie3);
+        confirmButton.setAttribute('data-partie4', partie4);
+    }
+
+    function cancelDelete() {
+        const confirmationPopup = document.getElementById('deleteConfirmationPopup');
+        confirmationPopup.style.display = 'none';
+    }
+
+    function confirmDelete() {
+        // Get the professorId from the Confirm button data attribute
+        const confirmButton = document.getElementById('confirmButton');
+        //const professorId = JSON.parse(confirmButton.getAttribute('data-professor-id'));
+        const partie1 = confirmButton.getAttribute('data-partie1');
+        const partie2 = confirmButton.getAttribute('data-partie2');
+        const partie3 = confirmButton.getAttribute('data-partie3');
+        const partie4 = confirmButton.getAttribute('data-partie4');
+        // Execute the delete action or make an API call
+        // You can replace the following line with your actual API call
+        window.location.href = '/admin/delete/'+partie1+'/'+partie2+'/'+partie3+'/'+partie4;
+
+        // Hide the confirmation popup after confirmation
+        const confirmationPopup = document.getElementById('deleteConfirmationPopup');
+        confirmationPopup.style.display = 'none';
+    }
+</script>
+
+</body>
+
+
+</body>
+</html>
